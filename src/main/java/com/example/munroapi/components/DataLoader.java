@@ -29,12 +29,16 @@ public class DataLoader implements ApplicationRunner {
         boolean notInSurround = true;
         int start = 0;
 
-        for(int i=0; i< inputString.length()-1; i++)
-        {
+        // remove any trailing commas from the inputString
+        int len = inputString.length()-1;
+        if (inputString.charAt(len) == ','){
+            inputString = inputString.substring(0, len);
+        }
+
+        for(int i=0; i< inputString.length()-1; i++) {
             // if not already in a surrounding char then grab the substring
-            if(inputString.charAt(i)==split && notInSurround)
-            {
-                csvValues.add(inputString.substring(start,i));
+            if(inputString.charAt(i) == split && notInSurround) {
+                csvValues.add(inputString.substring(start, i));
                 start = i + 1;                
             }   
             else if(inputString.charAt(i) == surround)
@@ -65,11 +69,7 @@ public class DataLoader implements ApplicationRunner {
         return listOfLines;        
     }
 
-    @Override
-    public void run(ApplicationArguments args)  {
-
-        List<String> listOfLines = parseCSVFile();
-
+    public static List<Munro> createMunrosFromData(List<String> listOfLines, Set columnIndexes){
         ArrayList<String> lineArgs = new ArrayList<>();
         List<Munro> munros = new ArrayList<>();
 
@@ -77,16 +77,27 @@ public class DataLoader implements ApplicationRunner {
             System.out.println(line);
             ArrayList<String> csvElements = splitStringOnCharSurroundChar(line, ',', '"');
             for (int i = 0; i < csvElements.size(); i++) {
-                Set columnIndexes = Set.of(5, 9, 13, 27); //TODO: Pull out into method arg
-                if (columnIndexes.contains(i)){
-                // if (i == 5 || i == 9 || i == 13 || i == 27){
+                if (columnIndexes.contains(i)){ // TODO: Handle exceptions for indexes that are OOB when data is missing
                     lineArgs.add(csvElements.get(i));
-                    if (lineArgs.size() == 4){
+                    if (lineArgs.size() == columnIndexes.size()){
                         List<Munro> muns = Stream.of(lineArgs).map(Munro::new).collect(Collectors.toList());
                         munros.addAll(muns);
                     }
                 }
             }
         }
+
+        return munros;
+    }
+
+    @Override
+    public void run(ApplicationArguments args)  {
+
+        List<String> listOfLines = parseCSVFile();
+
+        Set columnIndexes = Set.of(5, 9, 13, 27);
+        List<Munro> munros = createMunrosFromData(listOfLines, columnIndexes);
+
+
     }
 }
