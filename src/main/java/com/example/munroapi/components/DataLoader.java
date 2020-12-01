@@ -8,11 +8,7 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -70,16 +66,16 @@ public class DataLoader implements ApplicationRunner {
     }
 
     public static List<Munro> createMunrosFromData(List<String> listOfLines, Set columnIndexes){
-        ArrayList<String> lineArgs = new ArrayList<>();
         List<Munro> munros = new ArrayList<>();
 
         for (String line : listOfLines) {
             System.out.println(line);
             ArrayList<String> csvElements = splitStringOnCharSurroundChar(line, ',', '"');
+            ArrayList<String> lineArgs = new ArrayList<>();
             for (int i = 0; i < csvElements.size(); i++) {
                 if (columnIndexes.contains(i)){ // TODO: Handle exceptions for indexes that are OOB when data is missing
                     lineArgs.add(csvElements.get(i));
-                    if (lineArgs.size() == columnIndexes.size()){
+                    if (lineArgs.size() == columnIndexes.size() && !lineArgs.get(0).equals("")){
                         List<Munro> muns = Stream.of(lineArgs).map(Munro::new).collect(Collectors.toList());
                         munros.addAll(muns);
                     }

@@ -94,8 +94,7 @@ public class DataLoaderTests {
         assertEquals("data", out.get(3));
     }
 
-
-
+    
     @Test
     public void itShouldSplitLine_empty_columns(){
         //Given we have a CSV line w/ 4 columns
@@ -107,6 +106,8 @@ public class DataLoaderTests {
 
         //Then the list should have 0 elements (last column is empty)
         assertEquals(3, out.size()); //TODO check this is what we want!
+
+        //And they should be empty strings - TODO
 
     }
 

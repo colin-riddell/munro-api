@@ -42,7 +42,7 @@ public class Munro {
 //    private int SMCSection;
 //    private String RHBSection;
 //    private String section;
-    private int height;
+    private Float height;
 //    private int heightFeet;
 //    private String map50;
 //    private String map25;
@@ -64,7 +64,7 @@ public class Munro {
 //    private String comments;
 
 
-    public Munro(String name, int height, String gridRef, String category) {
+    public Munro(String name, float height, String gridRef, String category) {
         this.name = name;
         this.height = height;
         this.gridRef = gridRef;
@@ -73,7 +73,16 @@ public class Munro {
 
     public Munro(ArrayList<String> allArgs) {
         this.name = allArgs.get(0);
-        this.height = Integer.parseInt(allArgs.get(1));
+        try {
+            this.height = Float.parseFloat(allArgs.get(1));
+        } catch (NumberFormatException ex){
+            if (ex.getMessage().equals("empty String")) {
+                this.height = null;
+            } else {
+                ex.printStackTrace();
+                throw ex;
+            }
+        }
         this.gridRef = allArgs.get(2);
         this.category = allArgs.get(3);
     }
@@ -86,11 +95,11 @@ public class Munro {
         this.name = name;
     }
 
-    public int getHeight() {
+    public Float getHeight() {
         return height;
     }
 
-    public void setHeight(int height) {
+    public void setHeight(Float height) {
         this.height = height;
     }
 
