@@ -77,8 +77,8 @@ public class DataLoader implements ApplicationRunner {
             System.out.println(line);
             ArrayList<String> csvElements = splitStringOnCharSurroundChar(line, ',', '"');
             for (int i = 0; i < csvElements.size(); i++) {
-                Set numbers = Set.of(5, 9, 13, 27); //TODO: Pull out into method arg
-                if (numbers.contains(i)){
+                Set columnIndexes = Set.of(5, 9, 13, 27); //TODO: Pull out into method arg
+                if (columnIndexes.contains(i)){
                 // if (i == 5 || i == 9 || i == 13 || i == 27){
                     lineArgs.add(csvElements.get(i));
                     if (lineArgs.size() == 4){
