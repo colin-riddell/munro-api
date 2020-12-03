@@ -1,6 +1,8 @@
 package com.example.munroapi.repositories;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.example.munroapi.models.Munro;
 
@@ -23,9 +25,21 @@ public class MunroRepositoryImpl implements MunroRepository {
     // minimum height)
 
 
-    // List<Munro> findByCategory(String category){
+    public List<Munro> findByCategory(List<Munro> munros, String category){
+        List<Munro> retData = munros.stream().filter(mun -> mun.getCategory().equals(category)).collect(Collectors.toList());
+        return retData;
+    }
 
-    // }
+    public List<Munro> sortBy(List<Munro> munros, String sortBy, Boolean desc){
+        List<Munro> retData = null;
+        if (sortBy.equals("name")){
+            retData = munros.stream().sorted(Comparator.comparing(Munro::getName)).collect(Collectors.toList());
+        }
+        if (sortBy.equals("height")){
+            retData = munros.stream().sorted(Comparator.comparingDouble(Munro::getHeight)).collect(Collectors.toList());
+        }
+        return retData; 
+    }
 
     // List<Munro> findByName(){
 

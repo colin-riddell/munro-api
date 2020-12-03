@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.example.munroapi.services.DataLoader;
 import com.example.munroapi.models.Munro;
@@ -55,8 +56,43 @@ public class MunroController {
     }
 
     @GetMapping(path="/munros")
-    public ResponseEntity<List<Munro>> getAllMunros(){
-        return new ResponseEntity<List<Munro>>(this.munros, HttpStatus.OK);
+    public ResponseEntity getAllMunros(
+        @RequestParam(name = "category", required = false) String category,
+        @RequestParam(name = "maxResults", required = false) Integer maxResults,
+        @RequestParam(name = "sortBy", required = false) String sortBy, //height in meters or by name
+        // @RequestParam(name = "asc", required = false, defaultValue = "true") Boolean asc,      // sort by height/name ascending
+        @RequestParam(name = "dec", required = false, defaultValue = "false") Boolean dec,       // sory by height/name decending
+        @RequestParam(name = "maxHeight", required = false) Float maxHeight, // filter max height - heights above?
+        @RequestParam(name = "minHeight", required = false) Float minHeight  // filter min height - heights below?
+
+    ){
+        if (munros == null){
+            return new ResponseEntity<ResponseMessage>(
+                new ResponseMessage("No data found. Please post a csv to /munros/upload as form-data under the key 'file'.",
+                                    HttpStatus.NOT_FOUND.value()),HttpStatus.NOT_FOUND);
+        }
+        // Create a copy of the munros so filters can be subsiqently applied to it for this response
+        // without modifying the full list of munros
+        List<Munro> allMunros = this.munros.stream().map(s ->s).collect(Collectors.toList());
+
+        if (category != null){
+            //find all munros by category
+            allMunros = munroRepository.findByCategory(allMunros, category);
+        }
+
+        // if (dec !=null){
+        //     if (dec.equals(true)){
+        //         allMunros = munroRepository.sor
+        //     }
+        // }
+
+        if (sortBy != null){
+            allMunros = munroRepository.sortBy(allMunros, sortBy, dec);
+        }
+
+
+
+        return new ResponseEntity<List<Munro>>(allMunros, HttpStatus.OK);
     }
     
 
