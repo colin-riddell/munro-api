@@ -75,7 +75,7 @@ public class Munro {
         this.name = allArgs.get(0);
         try {
             this.height = Float.parseFloat(allArgs.get(1));
-        } catch (NumberFormatException ex){
+        } catch (Exception ex){
             if (ex.getMessage().equals("empty String")) {
                 this.height = null;
             } else {
@@ -84,7 +84,12 @@ public class Munro {
             }
         }
         this.gridRef = allArgs.get(2);
-        this.category = allArgs.get(3);
+        try {
+            this.category = allArgs.get(3);
+        } catch (IndexOutOfBoundsException ex){
+            this.category = "";
+        }
+        
     }
 
     public String getName() {

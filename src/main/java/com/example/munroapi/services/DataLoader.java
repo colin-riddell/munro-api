@@ -1,14 +1,13 @@
-package com.example.munroapi.components;
+package com.example.munroapi.services;
 
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -16,8 +15,8 @@ import java.util.stream.Stream;
 
 import com.example.munroapi.models.Munro;
 
-@Component
-public class DataLoader implements ApplicationRunner {
+@Service
+public class DataLoader {
 
     public static ArrayList<String> splitStringOnCharSurroundChar(String inputString, char split, char surround)
     {
@@ -44,14 +43,17 @@ public class DataLoader implements ApplicationRunner {
         return csvValues;
     }   
 
-    public static List<String> parseCSVFile(){
+    public static List<String> parseCSVFile(BufferedReader reader){
         // Read the CSV file into a BufferedReader
-        BufferedReader reader = null;
-        try {
-            reader = new BufferedReader(new InputStreamReader(new FileInputStream("munrotab_v6.2.csv"), "Cp1252"));
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (reader == null){
+            // BufferedReader reader = null;
+            try {
+                reader = new BufferedReader(new InputStreamReader(new FileInputStream("munrotab_v6.2.csv"), "Cp1252"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+
         try {
             reader.readLine(); // be sure to consume the title line
         } catch (Exception ex){
@@ -65,35 +67,28 @@ public class DataLoader implements ApplicationRunner {
         return listOfLines;        
     }
 
-    public static List<Munro> createMunrosFromData(List<String> listOfLines, Set columnIndexes){
+    public static List<Munro> createMunrosFromData(List<String> listOfLines, LinkedList<Integer> columnIndexes){
         List<Munro> munros = new ArrayList<>();
 
+        List<Integer> columnsCopy = columnIndexes.stream().map(s ->s).collect(Collectors.toList());
+
         for (String line : listOfLines) {
-            System.out.println(line);
             ArrayList<String> csvElements = splitStringOnCharSurroundChar(line, ',', '"');
+            System.out.println(csvElements.get(0));
             ArrayList<String> lineArgs = new ArrayList<>();
             for (int i = 0; i < csvElements.size(); i++) {
-                if (columnIndexes.contains(i)){ // TODO: Handle exceptions for indexes that are OOB when data is missing
+                if (columnsCopy.contains(i)){
+                    columnsCopy.remove(Integer.valueOf(i));
                     lineArgs.add(csvElements.get(i));
-                    if (lineArgs.size() == columnIndexes.size() && !lineArgs.get(0).equals("")){
-                        List<Munro> muns = Stream.of(lineArgs).map(Munro::new).collect(Collectors.toList());
-                        munros.addAll(muns);
-                    }
                 }
             }
+            if (lineArgs.size() >= 3 && !lineArgs.get(0).equals("")){
+                List<Munro> muns = Stream.of(lineArgs).map(Munro::new).collect(Collectors.toList());
+                munros.addAll(muns);
+                columnsCopy = columnIndexes.stream().map(s ->s).collect(Collectors.toList());
+            }
+            
         }
-
         return munros;
-    }
-
-    @Override
-    public void run(ApplicationArguments args)  {
-
-        List<String> listOfLines = parseCSVFile();
-
-        Set columnIndexes = Set.of(5, 9, 13, 27);
-        List<Munro> munros = createMunrosFromData(listOfLines, columnIndexes);
-
-
     }
 }
