@@ -16,6 +16,7 @@ import com.example.munroapi.repositories.MunroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,15 +45,19 @@ public class MunroController {
             listOfLines = DataLoader.parseCSVFile(br);
         } catch (IOException ex){
             ex.printStackTrace();
+            return new ResponseEntity<>(new ResponseMessage("Failed to load CSV data", HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
 
         }
         LinkedList<Integer> columnIndexes = new LinkedList<>(Arrays.asList(5, 9, 13, 27));
         this.munros = DataLoader.createMunrosFromData(listOfLines, columnIndexes);
 
-        return new ResponseEntity<>(new ResponseMessage("File Recieved", HttpStatus.OK.value()), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseMessage("File Recieved", HttpStatus.CREATED.value()), HttpStatus.CREATED);
     }
 
-
+    @GetMapping(path="/munros")
+    public ResponseEntity<List<Munro>> getAllMunros(){
+        return new ResponseEntity<List<Munro>>(this.munros, HttpStatus.OK);
+    }
     
 
 
