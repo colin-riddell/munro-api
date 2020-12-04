@@ -24,10 +24,21 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 
-
+/**
+ * MunroController is responsible for providing HTTP endpoints into the API:
+ * * /munros/upload - For POSTint CSV file data to populate the list of munros
+ * * /munros        - For allowing users to GET data about the munros. Query string params can be passed to
+ *                    this endpoint to customise and filter the results. The following queries are available:
+ *         * category=MUN|TOP    - pass either MUN or TOP as values to category to filter by that category
+ *         * sortBy=height|name  - pass either height or name to sortBy to sort by height in meters or name
+ *         * desc=true|false     - pass either true|false to desc to sortBy descending or ascending (descending is default)
+ *         * minHeight=_number_  - pass a decimal number to minHeight to get munros OVER that height
+ *         * maxHeight=_number_  - pass a decimal number to maxHeight to get munros UNDER that height
+ */
 @RestController
 public class MunroController {
 
+    // This could've probably also been placed in MunroRepository
     private List<Munro> munros;
 
     @Autowired
@@ -36,6 +47,12 @@ public class MunroController {
     @Autowired
     MunroRepository munroRepository;
 
+    /**
+     *
+     * @param file - POST a CSV file
+     * @return ResponseEntity with either success or failure if the CSV is valid and has been loaded or invalid and
+     * not loaded
+     */
     @PostMapping(path = "/munros/upload")
     public ResponseEntity<ResponseMessage> postCSV(@RequestParam("file") MultipartFile file){
         BufferedReader br;
@@ -55,6 +72,15 @@ public class MunroController {
         return new ResponseEntity<>(new ResponseMessage("File Recieved", HttpStatus.CREATED.value()), HttpStatus.CREATED);
     }
 
+    /*
+     * * /munros        - For allowing users to GET data about the munros. Query string params can be passed to
+     *                    this endpoint to customise and filter the results. The following queries are available:
+     *         * category=MUN|TOP    - pass either MUN or TOP as values to category to filter by that category
+     *         * sortBy=height|name  - pass either height or name to sortBy to sort by height in meters or name
+     *         * desc=true|false     - pass either true|false to desc to sortBy descending or ascending (descending is default)
+     *         * minHeight=_number_  - pass a decimal number to minHeight to get munros OVER that height
+     *         * maxHeight=_number_  - pass a decimal number to maxHeight to get munros UNDER that height
+     */
     @GetMapping(path="/munros")
     public ResponseEntity getAllMunros(
         @RequestParam(name = "category", required = false) String category,
@@ -105,8 +131,5 @@ public class MunroController {
         }
         return new ResponseEntity<List<Munro>>(allMunros, HttpStatus.OK);
     }
-    
-
-
 }
 

@@ -71,7 +71,6 @@ public class MunroRepositoryTests {
     }
 
 
-
     @Test
     public void canSortByHeight_descending(){
         //Given we have munros in a list
