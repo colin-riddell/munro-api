@@ -34,9 +34,15 @@ public class MunroRepositoryImpl implements MunroRepository {
         List<Munro> retData = null;
         if (sortBy.equals("name")){
             retData = munros.stream().sorted(Comparator.comparing(Munro::getName)).collect(Collectors.toList());
+            if (desc != null && desc == true){
+                retData = munros.stream().sorted(Comparator.comparing(Munro::getName).reversed()).collect(Collectors.toList());
+            }
         }
         if (sortBy.equals("height")){
             retData = munros.stream().sorted(Comparator.comparingDouble(Munro::getHeight)).collect(Collectors.toList());
+            if (desc != null && desc == true){
+                retData = munros.stream().sorted(Comparator.comparingDouble(Munro::getHeight).reversed()).collect(Collectors.toList());
+            }
         }
         return retData; 
     }
