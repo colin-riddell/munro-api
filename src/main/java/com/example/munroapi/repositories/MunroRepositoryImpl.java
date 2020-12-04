@@ -47,16 +47,27 @@ public class MunroRepositoryImpl implements MunroRepository {
         return retData; 
     }
 
-    // List<Munro> findByName(){
+    public List<Munro> limitTo(List<Munro> munros, int limit){
+        List<Munro> retData = null;
+        retData = munros.stream().limit(limit).collect(Collectors.toList());
+        return retData;
+    }
 
-    // }
 
-    // List<Munro> findByHeightMin(){
+    public List<Munro> findByHeightMin(List<Munro> munros, float minHeight){
+        List<Munro> retData = null;
 
-    // }
+        retData = munros.stream().filter(mun -> mun.getHeight() >= minHeight).collect(Collectors.toList());
+        return retData;
+    }
 
-    // List<Munro> findByHeightMax(){
 
-    // }
+    public List<Munro> findByHeightMax(List<Munro> munros, float maxHeight){
+        List<Munro> retData = null;
+
+        retData = munros.stream().filter(mun -> mun.getHeight() <= maxHeight).collect(Collectors.toList());
+        return retData;
+    }
+
     
 }

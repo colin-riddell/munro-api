@@ -60,7 +60,6 @@ public class MunroController {
         @RequestParam(name = "category", required = false) String category,
         @RequestParam(name = "maxResults", required = false) Integer maxResults,
         @RequestParam(name = "sortBy", required = false) String sortBy, //height in meters or by name
-        // @RequestParam(name = "asc", required = false) Boolean asc,      // sort by height/name ascending
         // Ascending order  is default so will only enable descending
         @RequestParam(name = "desc", required = false, defaultValue = "false") Boolean desc,       // sory by height/name decending
         @RequestParam(name = "maxHeight", required = false) Float maxHeight, // filter max height - heights above?
@@ -85,8 +84,25 @@ public class MunroController {
             allMunros = munroRepository.sortBy(allMunros, sortBy, desc);
         }
 
+        if (maxResults != null){
+            allMunros = munroRepository.limitTo(allMunros, maxResults);
+        }
 
+        if (minHeight !=null && maxHeight != null){
+            if (maxHeight < minHeight){
+                return new ResponseEntity<ResponseMessage>(
+                new ResponseMessage("maxHeight can't be less than minHeight.",
+                                    HttpStatus.BAD_REQUEST.value()),HttpStatus.BAD_REQUEST);
+            }
+        }
 
+        if (minHeight != null){
+            allMunros = munroRepository.findByHeightMin(allMunros, minHeight);
+        }
+
+        if (maxHeight != null){
+            allMunros = munroRepository.findByHeightMax(allMunros, maxHeight);
+        }
         return new ResponseEntity<List<Munro>>(allMunros, HttpStatus.OK);
     }
     
