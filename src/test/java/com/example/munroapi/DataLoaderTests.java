@@ -166,9 +166,6 @@ public class DataLoaderTests {
         assertEquals("NN448224", munros.get(0).getGridRef());
         assertEquals(923.0f, munros.get(0).getHeight());
         assertEquals("Stob Binnein - Creag a' Bhragit", munros.get(0).getName());
-
-
-
     }
 
 }

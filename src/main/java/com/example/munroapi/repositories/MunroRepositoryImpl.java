@@ -9,7 +9,7 @@ import com.example.munroapi.models.Munro;
 import org.springframework.stereotype.Repository;
 
 /**
- * Though not backed by a DB or using JPA, this class implements methods throught the repository pattern
+ * Though not backed by a DB or using JPA, this class implements methods through the repository pattern
  * that allow the user of this to run queries against the munros dataset.
  */
 
