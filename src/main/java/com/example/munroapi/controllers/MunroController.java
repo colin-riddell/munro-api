@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.example.munroapi.services.DataLoader;
+import com.example.munroapi.services.MunroService;
 import com.example.munroapi.models.Munro;
 import com.example.munroapi.payloads.ResponseMessage;
 import com.example.munroapi.repositories.MunroRepository;
@@ -38,14 +39,12 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 public class MunroController {
 
-    // This could've probably also been placed in MunroRepository
-    private List<Munro> munros;
 
     @Autowired
     DataLoader dataLoaderService;
 
     @Autowired
-    MunroRepository munroRepository;
+    MunroService munroService;
 
     /**
      *
@@ -67,7 +66,7 @@ public class MunroController {
 
         }
         LinkedList<Integer> columnIndexes = new LinkedList<>(Arrays.asList(5, 9, 13, 27));
-        this.munros = DataLoader.createMunrosFromData(listOfLines, columnIndexes);
+        this.munroService.setMunros(DataLoader.createMunrosFromData(listOfLines, columnIndexes));
 
         return new ResponseEntity<>(new ResponseMessage("File Recieved", HttpStatus.CREATED.value()), HttpStatus.CREATED);
     }
@@ -92,26 +91,28 @@ public class MunroController {
         @RequestParam(name = "minHeight", required = false) Float minHeight  // filter min height - heights below?
 
     ){
-        if (munros == null){
+        if (munroService.isEmpty()){
             return new ResponseEntity<ResponseMessage>(
                 new ResponseMessage("No data found. Please post a csv to /munros/upload as form-data under the key 'file'.",
                                     HttpStatus.NOT_FOUND.value()),HttpStatus.NOT_FOUND);
         }
+
+        List<Munro> munros = munroService.getMunros();
         // Create a copy of the munros so filters can be subsiqently applied to it for this response
         // without modifying the full list of munros
-        List<Munro> allMunros = this.munros.stream().map(s ->s).collect(Collectors.toList());
+        List<Munro> allMunros = munros.stream().map(s ->s).collect(Collectors.toList());
 
         if (category != null){
             //find all munros by category
-            allMunros = munroRepository.findByCategory(allMunros, category);
+            allMunros = munroService.findByCategory(allMunros, category);
         }
 
         if (sortBy != null){
-            allMunros = munroRepository.sortBy(allMunros, sortBy, desc);
+            allMunros = munroService.sortBy(allMunros, sortBy, desc);
         }
 
         if (maxResults != null){
-            allMunros = munroRepository.limitTo(allMunros, maxResults);
+            allMunros = munroService.limitTo(allMunros, maxResults);
         }
 
         if (minHeight !=null && maxHeight != null){
@@ -123,11 +124,11 @@ public class MunroController {
         }
 
         if (minHeight != null){
-            allMunros = munroRepository.findByHeightMin(allMunros, minHeight);
+            allMunros = munroService.findByHeightMin(allMunros, minHeight);
         }
 
         if (maxHeight != null){
-            allMunros = munroRepository.findByHeightMax(allMunros, maxHeight);
+            allMunros = munroService.findByHeightMax(allMunros, maxHeight);
         }
         return new ResponseEntity<List<Munro>>(allMunros, HttpStatus.OK);
     }
