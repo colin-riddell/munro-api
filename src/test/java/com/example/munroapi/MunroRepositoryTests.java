@@ -16,7 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 public class MunroRepositoryTests {
 
-    private List<Munro> munros;
+    private List<Munro> munros, munrosWithSameHeight;
 
     @Autowired
     MunroRepository munroRepository;
@@ -30,7 +30,16 @@ public class MunroRepositoryTests {
         Munro mun4 = new Munro("Everybuddys Hill", 500.4f,"NN12348", "TOP");
         Munro mun5 = new Munro("Little Hill", 980.3f,"NN12349", "MUN");
 
+
+        Munro mun6 = new Munro("Little Hill", 980.3f,"NN12349", "MUN");
+        Munro mun7 = new Munro("Other Hill", 980.3f,"NN12348", "MUN");
+        Munro mun8 = new Munro("Tiny Hill", 980.3f,"NN12347", "MUN");
+        Munro mun9 = new Munro("Massive Hill", 980.3f,"NN12346", "MUN");
+
         munros = List.of(mun1, mun2, mun3, mun4, mun5);
+        munrosWithSameHeight = List.of(mun6, mun7, mun8, mun9);
+
+
     }
     
     @Test
@@ -178,6 +187,56 @@ public class MunroRepositoryTests {
         assertEquals("Oor Hill", found.get(0).getName());
         assertEquals("Everybuddys Hill", found.get(1).getName());
         assertEquals("Little Hill", found.get(2).getName());
-        
     }    
+
+    @Test
+    public void  canSortByHeightThenName_AllSameHeight(){
+        //Given we have munros in a list
+        //And they are not sorted by height
+        //And they all have the same height
+        assertEquals("Little Hill", this.munrosWithSameHeight.get(0).getName());
+        assertEquals("Other Hill", this.munrosWithSameHeight.get(1).getName());
+        assertEquals("Tiny Hill", this.munrosWithSameHeight.get(2).getName());
+        assertEquals("Massive Hill", this.munrosWithSameHeight.get(3).getName());
+
+        // When we sort them by height - without specifying ascending or descending 
+        List<Munro> found = munroRepository.sortBy(this.munrosWithSameHeight, "height", null);
+
+        // Then they should be sorted by height
+        // And they should be sorted in alphabetical order by name when the heights are the same
+        assertEquals(4, found.size());
+        assertEquals("Little Hill", found.get(0).getName());
+        assertEquals("Massive Hill", found.get(1).getName());
+        assertEquals("Other Hill", found.get(2).getName());
+        assertEquals("Tiny Hill", found.get(3).getName());
+    } 
+
+    @Test
+    public void  canSortByHeightThenName_FourSameHeight(){
+        //Given we have munros in a list
+        //And they are not sorted by height
+        //And a few of the have the same height
+        Munro mun10 = new Munro("Scotland Hill", 800f,"NN12349", "MUN");
+        Munro mun11 = new Munro("England Hill", 1200.3f,"NN12348", "MUN");
+        Munro mun12 = new Munro("Ireland Hill", 980.3f,"NN12347", "MUN");
+        Munro mun13 = new Munro("Jersey Hill", 980.3f,"NN12346", "MUN");
+        Munro mun14 = new Munro("London Hill", 980.3f,"NN12346", "MUN");
+        Munro mun15 = new Munro("Zulu Hill", 980.3f,"NN12346", "MUN");
+
+        List<Munro> lotsOfMunrosSomeSameHeight = List.of(mun10, mun11, mun12, mun13, mun14, mun15);
+
+        // When we sort them by height - without specifying ascending or descending 
+        List<Munro> found = munroRepository.sortBy(lotsOfMunrosSomeSameHeight, "height", null);
+
+        // Then they should be sorted by height ascending
+        assertEquals(6, found.size());
+        assertEquals("Scotland Hill", found.get(0).getName());
+        // And the heights are the same they should be sorted in alphabetical order by name
+
+        assertEquals("Ireland Hill", found.get(1).getName());
+        assertEquals("Jersey Hill", found.get(2).getName());
+        assertEquals("London Hill", found.get(3).getName());
+        assertEquals("Zulu Hill", found.get(4).getName());
+        assertEquals("England Hill", found.get(5).getName());
+    } 
 }

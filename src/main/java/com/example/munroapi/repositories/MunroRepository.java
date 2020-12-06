@@ -3,7 +3,6 @@ package com.example.munroapi.repositories;
 import java.util.List;
 
 import com.example.munroapi.models.Munro;
-
 import org.springframework.stereotype.Repository;
 
 @Repository
