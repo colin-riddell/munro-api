@@ -8,6 +8,10 @@ import com.example.munroapi.repositories.MunroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * This singleton has access to to the munros list that's been parsed from CSV.
+ * It offers methods for performing actions on that data using the singleton MunroRepository
+ */
 @Service
 public class MunroService {
     @Autowired
@@ -16,10 +20,7 @@ public class MunroService {
     private List<Munro> munros;
 
     public boolean isEmpty(){
-        if (this.munros == null){
-            return true;
-        }
-        return false;
+        return this.munros == null;
     }
 
     public List<Munro> getMunros(){

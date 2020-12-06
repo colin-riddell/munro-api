@@ -1,0 +1,420 @@
+{
+	"info": {
+		"_postman_id": "21f06bf5-8c5b-45d7-8cac-ca63870613d8",
+		"name": "Muros",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "POST csv",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": ""
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/munros/upload",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"munros",
+						"upload"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /munros -  ",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/munros",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"munros"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /munros?category=MUN",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/munros?category=MUN",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"munros"
+					],
+					"query": [
+						{
+							"key": "category",
+							"value": "MUN"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /munros?category=MUN&sortBy=name",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/munros?category=MUN&sortBy=name",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"munros"
+					],
+					"query": [
+						{
+							"key": "category",
+							"value": "MUN"
+						},
+						{
+							"key": "sortBy",
+							"value": "name"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /munros?category=MUN&sortBy=height",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/munros?category=MUN&sortBy=height",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"munros"
+					],
+					"query": [
+						{
+							"key": "category",
+							"value": "MUN"
+						},
+						{
+							"key": "sortBy",
+							"value": "height"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /munros?sortBy=height",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/munros?sortBy=height",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"munros"
+					],
+					"query": [
+						{
+							"key": "sortBy",
+							"value": "height"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /munros?sortBy=height7&desc=true",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/munros?category=MUN&sortBy=height&desc=true",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"munros"
+					],
+					"query": [
+						{
+							"key": "category",
+							"value": "MUN"
+						},
+						{
+							"key": "sortBy",
+							"value": "height"
+						},
+						{
+							"key": "desc",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /munros?sortBy=height7&desc=false",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/munros?category=MUN&sortBy=height&desc=false",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"munros"
+					],
+					"query": [
+						{
+							"key": "category",
+							"value": "MUN"
+						},
+						{
+							"key": "sortBy",
+							"value": "height"
+						},
+						{
+							"key": "desc",
+							"value": "false"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /munros?sortBy=height7&desc=false&maxResults=3",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/munros?category=MUN&sortBy=height&desc=false&maxResults=10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"munros"
+					],
+					"query": [
+						{
+							"key": "category",
+							"value": "MUN"
+						},
+						{
+							"key": "sortBy",
+							"value": "height"
+						},
+						{
+							"key": "desc",
+							"value": "false"
+						},
+						{
+							"key": "maxResults",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /munros?category=MUN&minHeight=999",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/munros?category=MUN&minHeight=999&sortBy=height",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"munros"
+					],
+					"query": [
+						{
+							"key": "category",
+							"value": "MUN"
+						},
+						{
+							"key": "minHeight",
+							"value": "999"
+						},
+						{
+							"key": "sortBy",
+							"value": "height"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /munros?category=MUN&minHeight=999&maxHeight=900",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/munros?category=MUN&minHeight=999&maxHeight=900&sortBy=height",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"munros"
+					],
+					"query": [
+						{
+							"key": "category",
+							"value": "MUN"
+						},
+						{
+							"key": "minHeight",
+							"value": "999"
+						},
+						{
+							"key": "maxHeight",
+							"value": "900"
+						},
+						{
+							"key": "sortBy",
+							"value": "height"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /munros?category=MUN&minHeight=999&maxHeight=1200",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/munros?category=MUN&minHeight=999&maxHeight=1100&sortBy=height",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"munros"
+					],
+					"query": [
+						{
+							"key": "category",
+							"value": "MUN"
+						},
+						{
+							"key": "minHeight",
+							"value": "999"
+						},
+						{
+							"key": "maxHeight",
+							"value": "1100"
+						},
+						{
+							"key": "sortBy",
+							"value": "height"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -13,7 +13,6 @@ import com.example.munroapi.services.DataLoader;
 import com.example.munroapi.services.MunroService;
 import com.example.munroapi.models.Munro;
 import com.example.munroapi.payloads.ResponseMessage;
-import com.example.munroapi.repositories.MunroRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -54,15 +53,20 @@ public class MunroController {
      */
     @PostMapping(path = "/munros/upload")
     public ResponseEntity<ResponseMessage> postCSV(@RequestParam("file") MultipartFile file){
+        if (file == null){
+            return new ResponseEntity<>(new ResponseMessage(
+                "File was not sent", HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
+        }
         BufferedReader br;
         List<String> listOfLines = null;
         try {
             InputStream  is = file.getInputStream();
             br = new BufferedReader(new InputStreamReader(is,"Cp1252"));
             listOfLines = DataLoader.parseCSVFile(br);
-        } catch (IOException ex){
+        } catch (Exception ex){
             ex.printStackTrace();
-            return new ResponseEntity<>(new ResponseMessage("Failed to load CSV data", HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ResponseMessage(
+                "Failed to load CSV data", HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
 
         }
         LinkedList<Integer> columnIndexes = new LinkedList<>(Arrays.asList(5, 9, 13, 27));

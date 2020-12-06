@@ -1,21 +1,12 @@
 package com.example.munroapi;
 
-
-import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.util.List;
-
-import com.example.munroapi.models.Munro;
-import com.example.munroapi.services.MunroService;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -28,10 +19,6 @@ public class MunroControllerTestsLoadingError{
 
     @Autowired
     private MockMvc mockMvc;
-
-    @Autowired
-    private MunroService munroService;
-
 
     @Test
     public void shouldReturnDefaultMessage() throws Exception {

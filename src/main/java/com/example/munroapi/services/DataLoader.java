@@ -9,7 +9,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -43,22 +42,15 @@ public class DataLoader {
         return csvValues;
     }   
 
-    public static List<String> parseCSVFile(BufferedReader reader){
+    public static List<String> parseCSVFile(BufferedReader reader) throws Exception{
         // Read the CSV file into a BufferedReader
         if (reader == null){
-            // BufferedReader reader = null;
-            try {
-                reader = new BufferedReader(new InputStreamReader(new FileInputStream("munrotab_v6.2.csv"), "Cp1252"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+              reader = new BufferedReader(new InputStreamReader(new FileInputStream("munrotab_v6.2.csv"), "Cp1252"));
+
         }
 
-        try {
-            reader.readLine(); // be sure to consume the title line
-        } catch (Exception ex){
-            ex.printStackTrace(); //TODO: get rid when refacording into own method
-        }
+        reader.readLine(); // be sure to consume the title line
+
 
         // Stream the data from the reader into a List<Strings>
         // each element in listOfLines is a line from the CSV file
@@ -74,7 +66,6 @@ public class DataLoader {
 
         for (String line : listOfLines) {
             ArrayList<String> csvElements = splitStringOnCharSurroundChar(line, ',', '"');
-            System.out.println(csvElements.get(0));
             ArrayList<String> lineArgs = new ArrayList<>();
             for (int i = 0; i < csvElements.size(); i++) {
                 if (columnsCopy.contains(i)){
