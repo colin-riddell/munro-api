@@ -1,4 +1,5 @@
-package com.example.munroapi.controller;
+package com.example.munroapi;
+
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
@@ -23,7 +24,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class MunroControllerTest{
+public class MunroControllerTestsLoadingError{
 
     @Autowired
     private MockMvc mockMvc;
@@ -32,38 +33,16 @@ public class MunroControllerTest{
     private MunroService munroService;
 
 
-    Munro mun1;
-    Munro mun2;
-    Munro mun3;
-    Munro mun4;
-    Munro mun5;
-
-    @BeforeEach
-    public void before(){
-        mun1 = new Munro("Big Hill", 1000.2f,"NN12345", "MUN");
-        mun2 = new Munro("Oor Hill", 500.2f,"NN12346", "TOP");
-        mun3 = new Munro("Your Hill", 1300.f,"NN12347", "MUN");
-        mun4 = new Munro("Everybuddys Hill", 500.4f,"NN12348", "TOP");
-        mun5 = new Munro("Little Hill", 980.3f,"NN12349", "MUN");
-
-        List<Munro> munros = List.of(mun1, mun2, mun3, mun4, mun5);
-        munroService.setMunros(munros);
-
-    }
-
     @Test
-    public void shouldReturnAllExpectedMunros() throws Exception {
-        // Given there are some munros
+    public void shouldReturnDefaultMessage() throws Exception {
+        // Given there are no Munros
 
         // When we get all munros
         this.mockMvc.perform(get("/munros"))
                 .andDo(print())
-                .andExpect(status().is2xxSuccessful())
-                .andExpect(jsonPath("$[0].name", is(mun1.getName())))
-                .andExpect(jsonPath("$[1].name", is(mun2.getName())))
-                .andExpect(jsonPath("$[2].name", is(mun3.getName())))
-                .andExpect(jsonPath("$[3].name", is(mun4.getName())))
-                .andExpect(jsonPath("$[4].name", is(mun5.getName())));
+        // then a 404 error with appropriate message in body should be returned
+                .andExpect(status().is4xxClientError())
+                .andExpect(jsonPath("$.message", is("No data found. Please post a csv to /munros/upload as form-data under the key 'file'.")))
+                .andExpect(jsonPath("$.status", is(404)));
     }
-
-} 
+}

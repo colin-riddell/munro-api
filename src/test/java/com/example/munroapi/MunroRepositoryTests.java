@@ -38,8 +38,6 @@ public class MunroRepositoryTests {
 
         munros = List.of(mun1, mun2, mun3, mun4, mun5);
         munrosWithSameHeight = List.of(mun6, mun7, mun8, mun9);
-
-
     }
     
     @Test
